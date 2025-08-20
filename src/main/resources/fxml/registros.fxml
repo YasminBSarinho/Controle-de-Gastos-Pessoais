@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ifpb.gestaodegastos.controllers.RegistroController">
+   <children>
+      <Label fx:id="tituloLabel" layoutX="232.0" layoutY="63.0" text="Registrando Despesa">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+
+      <RadioButton fx:id="radioReceita" layoutX="232.0" layoutY="100.0" text="Receita"/>
+      <RadioButton fx:id="radioDespesa" layoutX="332.0" layoutY="100.0" text="Despesa"/>
+
+      <Label layoutX="143.0" layoutY="125.0" text="Titulo:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="campoTitulo" layoutX="232.0" layoutY="123.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+
+      <Label layoutX="143.0" layoutY="187.0" text="Descrição:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="campoDesc" layoutX="232.0" layoutY="185.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+
+      <Label layoutX="143.0" layoutY="245.0" text="Valor:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="campoValor" layoutX="231.0" layoutY="243.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+
+      <Label layoutX="143.0" layoutY="290.0" text="Categoria:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="choiceBox" layoutX="251.0" layoutY="290.0" prefWidth="150.0" />
+
+      <Button layoutX="251.0" layoutY="354.0" mnemonicParsing="false" onAction="#registrar" text="Registrar" />
+      <Button layoutX="339.0" layoutY="354.0" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+   </children>
+</AnchorPane>
