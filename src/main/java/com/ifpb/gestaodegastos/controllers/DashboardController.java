@@ -1,9 +1,11 @@
 package com.ifpb.gestaodegastos.controllers;
 
-
+import com.ifpb.gestaodegastos.Dao.ContaDao;
 import com.ifpb.gestaodegastos.Service.RegistroService;
 import com.ifpb.gestaodegastos.SessaoUsuario;
 import com.ifpb.gestaodegastos.model.Conta;
+import com.ifpb.gestaodegastos.model.Registro;
+import com.ifpb.gestaodegastos.model.TipoRegistro;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +17,9 @@ import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DashboardController extends BasicController {
 
@@ -104,24 +109,34 @@ public class DashboardController extends BasicController {
         }
     }
 
-    public void atualizarDashboard() {
-        atualizarSaldo();
+    private void popularGrafico() {
+        barChart.getData().clear();
+        List<Registro> registros = registroService.buscarTodosRegistros();
+
+        Map<String, Double> despesasPorCategoria = new HashMap<>();
+        Map<String, Double> receitasPorCategoria = new HashMap<>();
+
+        for (Registro registro : registros) {
+            String categoria = registro.getCategoria() != null ? registro.getCategoria() : "Outro";
+            if (registro.getTipo() == TipoRegistro.DESPESA) {
+                despesasPorCategoria.put(categoria,
+                        despesasPorCategoria.getOrDefault(categoria, 0.0) + registro.getValor().doubleValue());
+            } else if (registro.getTipo() == TipoRegistro.RECEITA) {
+                receitasPorCategoria.put(categoria,
+                        receitasPorCategoria.getOrDefault(categoria, 0.0) + registro.getValor().doubleValue());
+            }
+        }
+
+        XYChart.Series<String, Number> serieDespesas = new XYChart.Series<>();
+        serieDespesas.setName("Despesas");
+        despesasPorCategoria.forEach((categoria, valor) -> serieDespesas.getData().add(new XYChart.Data<>(categoria, valor)));
+
+        XYChart.Series<String, Number> serieReceitas = new XYChart.Series<>();
+        serieReceitas.setName("Receitas");
+        receitasPorCategoria.forEach((categoria, valor) -> serieReceitas.getData().add(new XYChart.Data<>(categoria, valor)));
+
+        barChart.getData().addAll(serieReceitas, serieDespesas);
     }
-
-    private void atualizarSaldo() {
-        Conta conta = SessaoUsuario.getInstance().getContaLogada();
-        if (conta == null) return;
-
-        textoUsuario.setText("Usuário: " + conta.getUsuario());
-
-        BigDecimal totalReceitas = registroService.totalReceitas();
-        BigDecimal totalDespesas = registroService.totalDespesas();
-        BigDecimal saldoAtual = totalReceitas.subtract(totalDespesas);
-        conta.setSaldo(saldoAtual);
-
-        textoSaldo.setText("Saldo: R$" + saldoAtual);
-    }
-
 
     @FXML
     private void addRegistro(ActionEvent event) throws IOException {

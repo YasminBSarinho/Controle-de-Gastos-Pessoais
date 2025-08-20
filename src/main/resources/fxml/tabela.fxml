@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ifpb.gestaodegastos.controllers.TabelaController">
+   <children>
+      <TableView fx:id="tabelaRegistros" layoutX="1.0" layoutY="88.0" prefHeight="425.0" prefWidth="820.0">
+        <columns>
+            <TableColumn fx:id="colId" prefWidth="67.0" text="Id" />
+            <TableColumn fx:id="colTipo" prefWidth="107.0" text="Tipo" />
+            <TableColumn fx:id="colTitulo" prefWidth="220.0" text="Titulo" />
+            <TableColumn fx:id="colDescricao" prefWidth="323.0" text="Descrição" />
+            <TableColumn fx:id="colValor" prefWidth="102.0" text="Valor" />
+
+        </columns>
+      </TableView>
+      <Button layoutX="354.0" layoutY="531.0" mnemonicParsing="false" onAction="#deletarSelecionado" text="Delete">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="742.0" layoutY="28.0" mnemonicParsing="false" onAction="#voltar" prefHeight="33.0" prefWidth="65.0" text="Voltar" />
+      <Label layoutX="340.0" layoutY="28.0" text="Seus Registros">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="272.0" layoutY="61.0" text="Você pode editar diretamente clicando nos registros" />
+   </children>
+</AnchorPane>
