@@ -36,6 +36,39 @@ public class DashboardController extends BasicController {
         atualizarDashboard();
     }
 
+    public void definirOrcamento(ActionEvent event) {
+        Conta conta = SessaoUsuario.getInstance().getContaLogada();
+        if (conta == null) return;
+        try {
+            BigDecimal valor = new BigDecimal(campoOrcamento.getText());
+            if (valor.compareTo(conta.getSaldo()) > 0) {
+                labelOrcamento.setText("Valor inválido: não pode ser maior que o saldo");
+                return;
+            }
+            conta.setOrcamento(valor);
+            conta.setOrcamentoAtivo(true);
+            ContaDao contaDao = new ContaDao();
+            contaDao.salvar(conta);
+            campoOrcamento.clear();
+            atualizarDashboard();
+        } catch (NumberFormatException e) {
+            labelOrcamento.setText("Valor inválido");
+        }
+    }
+
+    public void desativarOrcamento(ActionEvent event) {
+        Conta conta = SessaoUsuario.getInstance().getContaLogada();
+        if (conta == null){
+            return;
+        }
+        conta.setOrcamentoAtivo(false);
+        conta.setOrcamento(BigDecimal.ZERO);
+        ContaDao contaDao = new ContaDao();
+        contaDao.salvar(conta);
+        labelOrcamento.setText("Orçamento desativado");
+        atualizarDashboard();
+    }
+
     public void atualizarDashboard() {
         atualizarSaldo();
     }
