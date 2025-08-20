@@ -71,6 +71,41 @@ public class DashboardController extends BasicController {
 
     public void atualizarDashboard() {
         atualizarSaldo();
+        atualizarOrcamento();
+        popularGrafico();
+    }
+
+    private void atualizarSaldo() {
+        Conta conta = SessaoUsuario.getInstance().getContaLogada();
+        if (conta == null) return;
+
+        textoUsuario.setText("Usuário: " + conta.getUsuario());
+
+        BigDecimal totalReceitas = registroService.totalReceitas();
+        BigDecimal totalDespesas = registroService.totalDespesas();
+        BigDecimal saldoAtual = totalReceitas.subtract(totalDespesas);
+        conta.setSaldo(saldoAtual);
+
+        textoSaldo.setText("Saldo: R$" + saldoAtual);
+    }
+
+    private void atualizarOrcamento() {
+        Conta conta = SessaoUsuario.getInstance().getContaLogada();
+        if (conta == null || !conta.isOrcamentoAtivo()) {
+            labelOrcamento.setText("Orçamento desativado");
+            return;
+        }
+        BigDecimal valor = conta.getOrcamento();
+
+        if (valor.compareTo(BigDecimal.ZERO) < 0) {
+            labelOrcamento.setText("Orçamento restante: R$0.0 (Excedido!)");
+        } else {
+            labelOrcamento.setText("Orçamento restante: R$" + valor.toString());
+        }
+    }
+
+    public void atualizarDashboard() {
+        atualizarSaldo();
     }
 
     private void atualizarSaldo() {
